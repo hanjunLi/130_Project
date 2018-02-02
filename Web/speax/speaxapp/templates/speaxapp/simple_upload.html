@@ -11,6 +11,14 @@
 
 {% if uploaded_file_url %}
 <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+<p>File type: {{file_type}} </p>
+{% endif %}
+
+{% if audio_path %}
+<audio controls>
+  <source src="{{ audio_path }}" type="audio/mpeg">
+  Your browser doesn't support the audio element
+</audio>
 {% endif %}
 
 <p><a href="{% url 'index' %}">Return to home</a></p>
