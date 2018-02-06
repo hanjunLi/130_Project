@@ -1,0 +1,20 @@
+2018-02-01  Andres Abdo  <andresabdo23@gmail.com>
+
+	* Web/speax/Web/speax/speaxapp/templates/speaxapp/simple_upload.html
+	* Web/speax/speaxapp/views.py
+	included gTTS module to play audio in the prototype.
+
+2018-02-01  Andres Abdo  <andresabdo23@gmail.com>
+
+	* Web/speax/Web/speax/speaxapp/templates/speaxapp/simple_upload.html
+	* Web/speax/speaxapp/views.py
+	created simple prototype of implementing a file upload buttom.
+
+2018-02-01  Andres Abdo  <andresabdo23@gmail.com>
+
+	* Web/speax/ replaced project folder for 1.11 with Django 2.0
+
+2018-02-01  Hanjun Li  <h1212@g.ucla.edu>
+
+	* Web/speax/ created place-holder folder: Web/speax/ using Django 1.11
+
