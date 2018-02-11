@@ -18,3 +18,8 @@
 
 	* Web/speax/ created place-holder folder: Web/speax/ using Django 1.11
 
+2018-02-11  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml_parser.py
+	functions that parse metadata and body text from grobid research paper XML
+
