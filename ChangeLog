@@ -1,4 +1,20 @@
-2018-02-01  Andres Abdo  <andresabdo23@gmail.com>
+2018-02-12  Hanjun Li  <h1212@g.ucla.edu>
+
+	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html: added playlist
+	sections
+
+	* interface.json: sample interface between web and xmlparser
+
+	* Web/speax/staticfiles/play_list.js: javascript functions for playlist
+
+	* Web/speax/speaxapp/views.py (simple_upload, make_tracks): parse json file
+	to make tracks
+
+2018-02-11  Sherry Lin  <sjslin@gmail.com>
+	* xml_parser/xml_parser.py
+	functions that parse metadata and body text from grobid research paper XML
+
+2018-02-01  Hanjun Li  <h1212@g.ucla.edu>
 
 	* Web/speax/Web/speax/speaxapp/templates/speaxapp/simple_upload.html
 	* Web/speax/speaxapp/views.py
@@ -18,8 +34,5 @@
 
 	* Web/speax/ created place-holder folder: Web/speax/ using Django 1.11
 
-2018-02-11  Sherry Lin  <sjslin@gmail.com>
 
-	* xml_parser/xml_parser.py
-	functions that parse metadata and body text from grobid research paper XML
 
