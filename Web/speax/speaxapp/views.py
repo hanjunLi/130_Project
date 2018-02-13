@@ -13,6 +13,8 @@ from django.core.files import File
 # gtts or other speech engine
 from gtts import gTTS
 
+import json
+
 class track:
     def __init__(self, name="", path=""):
         self.name = name
@@ -26,19 +28,29 @@ def get_audio_from_text(text_file):
     tts = gTTS(text=text_buffer, lang='en', slow=False)
     return tts
 
+def get_audio_from_str(string):
+    tts = gTTS(text=string, lang='en', slow=False)
+    return tts
+
 def get_jason_response():
-    # real implementation through RPC
-    # temporarily: read from file
+    # implementation through RPC
     pass
 
-def make_tracks(jason_data):
+def make_tracks(jason_file, fs):
+    data = json.load(jason_file)
+    json_tracks = data['tracks']
+    json_metadata = data['metadata']
+    track_list = []
+    for i in range(len(json_tracks)):
+        audio = get_audio_from_str( json_tracks[str(i+1)]['content'] )
+        with open('myaudio', 'w+b') as af:
+            audio.write_to_fp(af)
+            audio_url = fs.url(fs.save(af.name, af))
+        track_list.append( track( json_tracks[str(i+1)]['id'], audio_url ) )
+    return track_list
     
-    pass
-
-
 def simple_upload(request):
     template_dict = {};
-
     
     if request.method == 'POST' and 'myfile' in request.FILES:
         myfile = request.FILES['myfile']
@@ -56,7 +68,12 @@ def simple_upload(request):
             with open('myaudio', 'w+b') as af:
                 audio.write_to_fp(af)
                 audio_url = fs.url(fs.save(af.name, af))
-
+                
             template_dict['tracks'] = [track("uploaded_text", audio_url)]
 
+        if myfile.content_type.find('json') > -1:
+            # json file with tracks
+            with open(fs.path(filename), 'r') as json_file:
+                template_dict['tracks'] = make_tracks(json_file, fs)
+            
     return render(request, 'speaxapp/simple_upload.html', template_dict)
