@@ -1,6 +1,12 @@
-
-
 {% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'play_list.css' %}">
+    <script src="{% static 'jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'play_list.js' %}"></script>
+</head>
+
+
+
 
 {% block content %}
 <form method="post" enctype="multipart/form-data">
@@ -14,11 +20,19 @@
 <p>File type: {{file_type}} </p>
 {% endif %}
 
-{% if audio_path %}
+{% if tracks %}
 <audio controls>
-  <source src="{{ audio_path }}" type="audio/mpeg">
+  <source src="{{ tracks.0.path }}" type="audio/mpeg">
   Your browser doesn't support the audio element
 </audio>
+
+<ul id="playlist">
+  {% for audio_track in tracks %}
+    <li><a href="{{ audio_track.path }}">{{ audio_track.name }}</a></li>
+  {% endfor %}
+</ul>
+
+
 {% endif %}
 
 <p><a href="{% url 'index' %}">Return to home</a></p>
