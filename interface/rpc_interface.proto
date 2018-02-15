@@ -1,0 +1,11 @@
+service ParsePDF{
+  rpc GetFeature(stream Chunck) returns (jsonStr) {}
+}
+
+message Chunk{
+  bytes pdfContent = 1;
+}
+
+message jsonStr{
+  string jsonData = 1;
+}
