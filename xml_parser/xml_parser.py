@@ -38,12 +38,12 @@ def metadata(analytic):
     #print('authors are', authors)
     metadata['authors'] = authors
 
-    json_str = json.dumps(metadata)
+    json_str = json.dumps(metadata, indent=4)
     print(json_str)
 
     #this few lines do not seem to work, no data appearing in data.json
     with open('data.json', 'w') as f:
-        f.write(json.dumps(metadata))
+        f.write(json.dumps(metadata, indent=4))
 
     #print(metadata)
     return json_str
@@ -81,7 +81,7 @@ def tracks(body):
         tracknum += 1
 
     #print(tracks)
-    json_str = json.dumps(tracks, sort_keys = True, ensure_ascii=True)
+    json_str = json.dumps(tracks, indent=4, sort_keys = True, ensure_ascii=True)
     '''
     with open('data.json', 'w') as f:
         f.write(json.dumps(tracks, sort_keys = True, ensure_ascii=True))
