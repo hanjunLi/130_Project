@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "title": "A Semantic Loss Function for Deep Learning with Symbolic Knowledge",
+    "authors": "Jingyi Xu, Zilu Zhang, Tal Friedman, Yitao Liang, Guy Van den Broeck"
+  },
+  "tracks": {
+    "1": {
+      "id": "title and authors",
+      "content": "A Semantic Loss Function for Deep Learning with Symbolic Knowledge by Jingyi Xu, Zilu Zhang, Tal Friedman, Yitao Liang, Guy Van den Broeck"
+    },
+    "2": {
+      "id": "Abstract",
+      "content": "This paper develops a novel methodology for using symbolic knowledge in deep learning. From ﬁrst principles, we derive a semantic loss function that bridges between neural output vectors and logical constraints. This loss function captures how close the neural network is to satisfying the constraints on its output. An experimental evaluation shows that it effectively guides the learner to achieve (near-)state-of-the-art results on semi-supervised multi-class classiﬁcation. Moreover, it signiﬁcantly increases the ability of the neural network to predict structured objects, such as rankings and paths. These discrete concepts are tremendously difﬁcult to learn, and beneﬁt from a tight integration of deep learning and symbolic reasoning methods."
+    },
+    "3": {
+      "id": "1. Introduction",
+      "content": "The widespread success of representation learning raises the question of which AI tasks are amenable to deep learn-ing, which tasks require classical model-based symbolic reasoning, and whether we can beneﬁt from a tighter in-tegration of both approaches. In recent years, signiﬁcant effort has gone towards various ways of using represen-tation learning to solve tasks that were previously tackled by symbolic methods. Such efforts include neural comput-ers, Turing machines, and differentiable programming (e.g Weston et al. (2014); Reed & De Freitas (2015); Graves et al. (2016); Riedel et al. (2016)), relational embeddings (e.g. Yang et al. (2014); Lin et al. (2015)), deep learning for graph data, neural theorem proving (e.g.Bordes et al. (2013); Neelakantan et al. (2015); Duvenaud et al. (2015); Niepert et al. (2016)), and many more."
+    },
+    "4": {
+      "id": "2. Background and Notation",
+      "content": "A logical sentence (α or β) is constructed in the usual way, from variables and logical connectives (∧, ∨, etc.), and is also called a formula or constraint. A state or world x is an instantiation to all variables X. A state x satisﬁes a sentence α, denoted [Math], if the sentence evaluates to be true in that world, as deﬁned in the usual way. A sentence α entails another sentence β, denoted [Math] if all worlds that satisfy α also satisfy β. A sentence α is logically equivalent to sentence β, denoted [Math], if both [Math] and [Math]. The output row vector of a neural net is denoted p. Each value in prepresents the probability of an output and falls in [0, 1]. We use both softmax and sigmoid units for our out-put activation functions. The notation for states x is used to refer the an assignment, the logical sentence enforcing the assignment, or the binary vector capturing that same assignment, as these are all equivalent notions."
+    },
+    "5": {
+      "id": "3. Semantic Loss",
+      "content": "In this section, we formally introduce semantic loss. We also show that semantic loss is not just an arbitrary deﬁ-nition, but rather is deﬁned uniquely by a set of intuitive properties. Stating these properties formally, we then pro-vide a rigorous, axiomatic proof of the uniqueness of se-mantic loss in satisfying these."
+    },
+    "6": {
+      "id": "3.1. Deﬁnition",
+      "content": "The formal deﬁnition of this is as follows: Deﬁnition 1 (Semantic Loss). Let p be a vector of proba-bilities, one for each variable in X, and let α be a sentence over X. The semantic loss between α and p is [Math] Intuitively, the semantic loss is proportionate to a negative logarithm of the probability of generating a state that sat-isﬁes the constraint, when sampling values according to p. Hence, it is the self-information (or “surprise”) of obtaining an assignment that satisﬁes the constraint (Jones, 1979)."
+    },
+    "26": {
+      "id": "5. Conclusions",
+      "content": "Both reasoning and semi-supervised learning are often identiﬁed as key challenges for deep learning going for-ward. In this paper, we developed a principled way of com-bining automated reasoning for propositional logic with ex-isting deep learning architectures. Moreover, we showed that semantic loss provides signiﬁcant beneﬁts during semi-supervised classiﬁcation, as well as deep structured predic-tion for highly complex output spaces."
+    }
+  }
+}
