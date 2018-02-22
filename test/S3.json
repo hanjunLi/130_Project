@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "Hierarchical graph embedding in vector space by graph pyramid",
+    "authors": "Seyedeh Fatemeh Mousavi, Mehran Safayani, Abdolreza Mirzaei, Hoda Bahonar"
+  },
+  "tracks": {
+    "1": {
+      "id": "title and authors",
+      "content": "Hierarchical graph embedding in vector space by graph pyramid by Seyedeh Fatemeh Mousavi, Mehran Safayani, Abdolreza Mirzaei, Hoda Bahonar"
+    },
+    "2": {
+      "id": "Abstract",
+      "content": "Loss of information is the major challenge in graph embedding in vector space which reduces the impact of representational power of graphs in pattern recognition tasks."
+    },
+    "3": {
+      "id": "1. Introduction",
+      "content": "The superior representational power of graphs introduces these data structures as popular replacements for vectors in many pattern recognition applications."
+    },
+    "4": {
+      "id": "2. Literature review‌",
+      "content": ""
+    },
+    "5": {
+      "id": "2.1. Graph embedding",
+      "content": "The embedding methods can be divided into three groups based on their feature extraction approach."
+    },
+    "6": {
+      "id": "2.2. Pyramidal models",
+      "content": "A wide range of applications such as image segmentation [16], region description and detection [17] make use of pyramid as a useful structure."
+    },
+    "7": {
+      "id": "2.3. Graph summarization",
+      "content": "Graph summarization methods have a major contribution in resolution reduction of the graphs."
+    },
+    "8": {
+      "id": "3. Concepts and notations‌",
+      "content": ""
+    },
+    "9": {
+      "id": "3.1. Graph",
+      "content": "Deﬁnition 1 (Graph). Let [math] and [math] be a ﬁnite or inﬁnite label sets for nodes and edges, respectively."
+    },
+    "10": {
+      "id": "3.2. Graph edit distance",
+      "content": "Graph edit distance is the most ﬂexible error tolerant graph matching method able to deal with arbitrary graphs and has obtained robust results against noise."
+    },
+    "11": {
+      "id": "4. Pyramidal graph embedding",
+      "content": "Regardless of applied method, graph embedding in vector space leads to the loss of some graph information due to the lower representational power of the vectors."
+    },
+    "12": {
+      "id": "4.1. Graph pyramid",
+      "content": "Assume the graph [math] and its corresponding pyramid as [math], shown in Fig. 3. There exists a reduced graph of g at every level of [math]."
+    },
+    "13": {
+      "id": "4.1.1. Numerical attributed graph summarization",
+      "content": "An appropriate graph summarization algorithm for numerical node attributed graphs is proposed here (Algorithm 1)."
+    },
+    "14": {
+      "id": "4.1.2. Categorical attributed graph summarization‌",
+      "content": "We suggest an existing algorithm called k-SNAP [11] to sum-marize categorical attributed graphs."
+    },
+    "15": {
+      "id": "4.2. Multi-scale embedding",
+      "content": "The last step in pyramidal framework is multi-scale embedding."
+    },
+    "16": {
+      "id": "5. Experiments‌",
+      "content": ""
+    },
+    "17": {
+      "id": "5.1. Graph datasets",
+      "content": "To demonstrate the generality of the framework, experiments are performed on three datasets including Columbia Object Image Library (COIL) [35] and the Object DataBanK (ODBK) [36] which are two object detection graph datasets containing numerical labels, and Enzymes dataset [37] with categorical labels consists of the graphs of tertiary structures of proteins."
+    },
+    "18": {
+      "id": "5.2. Numerical attributed graphs",
+      "content": "The objective here is twofold: (I) the proposed summarization method is examined to show how this method can favorably preserve the necessary information to classify the graphs, (II) exhibit the power of this framework in enriching the three embedding methods, each selected from either of groups. The objective II is empirically conﬁrmed through k-Nearest Neighbor (k-NN) and Support Vector Machine (SVM) classiﬁers."
+    },
+    "19": {
+      "id": "5.2.1. Performance evaluation of summary graphs",
+      "content": "The objective of graph summarization algorithm is to preserve the main structures of original graphs as much as possible."
+    },
+    "20": {
+      "id": "5.2.2. Pyramidal graph embedding on single-scale methods‌",
+      "content": "Here, the results of the pyramidal graph embedding application on three selected methods are presented."
+    },
+    "21": {
+      "id": "5.2.3. PyrDGE method",
+      "content": "The dissimilarity-based Graph Embedding (DGE) method introduced by Riesen and Bunke [1] is usually adopted as a reference method in comparing with other embedding methods."
+    },
+    "22": {
+      "id": "5.2.4. PyrNRS method",
+      "content": "The selected method from the probing based group is the hard version of Node Representative Statistics (NRS) method [2,40]."
+    },
+    "23": {
+      "id": "5.2.5. PyrIZF method",
+      "content": "The spectral methods are appropriate options in processing the unlabeled graphs which afford an opportunity for assessing the power of pyramidal framework in enhancing the capability of feature vectors in graph structure representation."
+    },
+    "24": {
+      "id": "5.3. Categorical attributed graphs",
+      "content": "The objective here is to show how to adopt embedding and summarization methods for the categorical dataset."
+    },
+    "25": {
+      "id": "5.4. Memory requirement and runtime",
+      "content": "It is obvious that the required amount of memory to store pyramid nodes is of [math]; however, the memory cost is mainly associated with the neighborhood relationships between the nodes; therefore, the maximum required memory in this case is [math] which can be decreased through the sparse representation of the graphs."
+    },
+    "26": {
+      "id": "6. Conclusions",
+      "content": "One of the drawbacks of graph embedding paradigm is the reduction in the informative graph representation strength."
+    }
+  }
+}

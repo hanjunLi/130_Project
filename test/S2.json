@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "title": "Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering",
+    "authors": "Michaël Defferrard, Xavier Bresson, Pierre Vandergheynst"
+  },
+  "tracks": {
+    "1": {
+      "id": "title and authors",
+      "content": "Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering by Michaël Defferrard, Xavier Bresson, Pierre Vandergheynst"
+    },
+    "2": {
+      "id": "Abstract",
+      "content": "In this work, we are interested in generalizing convolutional neural networks (CNNs) from low-dimensional regular grids, where image, video and speech are represented, to high-dimensional irregular domains, such as social networks, brain connectomes or words’ embedding, represented by graphs."
+    },
+    "3": {
+      "id": "1 Introduction",
+      "content": "Convolutional neural networks [19] offer an efficient architecture to extract highly meaningful statistical patterns in large-scale and high-dimensional datasets. "
+    },
+    "4": {
+      "id": "2 Proposed Technique",
+      "content": "Generalizing CNNs to graphs requires three fundamental steps: (i) the design of localized convolutional filters on graphs, (ii) a graph coarsening procedure that groups together similar vertices and (iii) a graph pooling operation that trades spatial resolution for higher filter resolution."
+    },
+    "5": {
+      "id": "2.1 Learning Fast Localized Spectral Filters",
+      "content": "However, a filter defined in the spectral domain is not naturally localized and translations are costly due to the [math] multiplication with the graph Fourier basis. Both limitations can however be overcome with a special choice of filter parametrization. \n Graph Fourier Transform. We are interested in processing signals defined on undirected and connected graphs [math], where V is a finite set of [math] vertices, E is a set of edges and [math] is a weighted adjacency matrix encoding the connection weight between two vertices. A signal [math] defined on the nodes of the graph may be regarded as a vector [math] where [math] is the value of x at the ith node. An essential operator in spectral graph analysis is the graph Laplacian [6], which combinatorial definition is [math] where [math] is the diagonal degree matrix with [math], and normalized definition is [math] where In is the identity matrix. As L is a real symmetric positive semidefinite matrix, it has a complete set of orthonormal eigenvectors [math], known as the graph Fourier modes, and their associated ordered real nonnegative eigenvalues [math], identified as the frequencies of the graph. The Laplacian is indeed diagonalized by the Fourier basis [math] such that [math] where [math]. The graph Fourier transform of a signal [math] is then defined as [math], and its inverse as [math]. As on Euclidean spaces, that transform enables the formulation of fundamental operations such as filtering. \n Spectral filtering of graph signals. As we cannot express a meaningful translation operator in the vertex domain, the convolution operator on graph [math] is defined in the Fourier domain such that [math], where [math] is the element-wise Hadamard product. It follows that a signal x is filtered by [math] as [math] A non-parametric filter, i.e. a filter whose parameters are all free, would be defined as [math] where the parameter [math] is a vector of Fourier coefficients. \n Polynomial parametrization for localized filters. There are however two limitations with nonparametric filters: (i) they are not localized in space and (ii) their learning complexity is in O(n), the dimensionality of the data. These issues can be overcome with the use of a polynomial filter [math]; (3) where the parameter [math]is a vector of polynomial coefficients. The value at vertex j of the filter [math] centered at vertex i is given by [math], where the kernel is localized via a convolution with a Kronecker delta function [math]. By [12, Lemma 5.2], [math] implies [math], where dG is the shortest path distance, i.e. the minimum number of edges connecting two vertices on the graph. Consequently, spectral filters represented by Kthorder polynomials of the Laplacian are exactly K-localized. Besides, their learning complexity is O(K), the support size of the filter, and thus the same complexity as classical CNNs. \n Recursive formulation for fast filtering. While we have shown how to learn localized filters with K parameters, the cost to filter a signal x as [math] is still high with O(n2) operations because of the multiplication with the Fourier basis U. A solution to this problem is to parametrize [math] as a polynomial function that can be computed recursively from L, as K multiplications by a sparse L costs [math]. One such polynomial, traditionally used in GSP to approximate kernels (like wavelets), is the Chebyshev expansion [12]. Another option, the Lanczos algorithm [33], which constructs an orthonormal basis of the Krylov subspace [math], seems attractive because of the coefficients’ independence. It is however more convoluted and thus left as a future work. \n Recall that the Chebyshev polynomial [math] of order k may be computed by the stable recurrence relation [math] with [math] and [math]. These polynomials form an orthogonal basis for [math], the Hilbert space of square integrable functions with respect to the measure [math]. A filter can thus be parametrized as the truncated expansion [math] of order [math], where the parameter [math] is a vector of Chebyshev coefficients and [math] is the Chebyshev polynomial of order k evaluated at [math], a diagonal matrix of scaled eigenvalues that lie in [math]. The filtering operation can then be written as [math], where [math] is the Chebyshev polynomial of order k evaluated at the scaled Laplacian [math]. Denoting [math], we can use the recurrence relation to compute [math] with [math] and [math]. The entire filtering operation [math] then costs [math] operations. \n Learning filters. The jth output feature map of the sample s is given by [math] where the [math] are the input feature maps and the [math] vectors of Chebyshev coefficients [math] are the layer’s trainable parameters. When training multiple convolutional layers with the backpropagation algorithm, one needs the two gradients [math] where E is the loss energy over a mini-batch of S samples. Each of the above three computations boils down to K sparse matrix-vector multiplications and one dense matrix-vector multiplication for a cost of [math] operations. These can be efficiently computed on parallel architectures by leveraging tensor operations. Eventually, [math] only needs to be computed once."
+    },
+    "6": {
+      "id": "2.2 Graph Coarsening",
+      "content": "The pooling operation requires meaningful neighborhoods on graphs, where similar vertices are clustered together."
+    },
+    "7": {
+      "id": "2.3 Fast Pooling of Graph Signals",
+      "content": "Pooling operations are carried out many times and must be efficient."
+    },
+    "8": {
+      "id": "3 Related Works",
+      "content": ""
+    },
+    "9": {
+      "id": "3.1 Graph Signal Processing",
+      "content": "The emerging field of GSP aims at bridging the gap between signal processing and spectral graph theory [6, 3, 21], a blend between graph theory and harmonic analysis."
+    },
+    "10": {
+      "id": "3.2 CNNs on Non-Euclidean Domains",
+      "content": "The Graph Neural Network framework [29], simplified in [20], was designed to embed each node in an Euclidean space with a RNN and use those embeddings as features for classification or regression of nodes or graphs."
+    },
+    "11": {
+      "id": "4 Numerical Experiments",
+      "content": "In the sequel, we refer to the non-parametric and non-localized filters (2) as Non-Param, the filters (7) proposed in [4] as Spline and the proposed filters (4) as Chebyshev."
+    },
+    "12": {
+      "id": "4.1 Revisiting Classical CNNs on MNIST",
+      "content": "To validate our model, we applied it to the Euclidean case on the benchmark MNIST classification problem [19], a dataset of 70,000 digits represented on a 2D grid of size [math]."
+    },
+    "13": {
+      "id": "4.2 Text Categorization on 20NEWS",
+      "content": "To demonstrate the versatility of our model to work with graphs generated from unstructured data, we applied our technique to the text categorization problem on the 20NEWS dataset which consists of 18,846 (11,314 for training and 7,532 for testing) text documents associated with 20 classes [15]."
+    },
+    "14": {
+      "id": "4.3 Comparison between Spectral Filters and Computational Efficiency",
+      "content": "Table 3 reports that the proposed parametrization (4) outperforms (7) from [4] as well as nonparametric filters (2) which are not localized and require O(n) parameters."
+    },
+    "15": {
+      "id": "4.4 Influence of Graph Quality",
+      "content": "For any graph CNN to be successful, the statistical assumptions of locality, stationarity, and compositionality regarding the data must be fulfilled on the graph where the data resides."
+    },
+    "16": {
+      "id": "5 Conclusion and Future Work",
+      "content": "In this paper, we have introduced the mathematical and computational foundations of an efficient generalization of CNNs to graphs using tools from GSP."
+    }
+  }
+}
