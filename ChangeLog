@@ -1,3 +1,16 @@
+2018-02-21  Hanjun Li  <h1212@g.ucla.edu>
+
+	* interface/rpc_interface_pb2.py: messages definition compiled from
+	rpc_interface.proto
+
+	* interface/rpc_interface_pb2_grpc.py: server and client functions compiled from
+	rpc_interface.proto
+
+	* interface/rpc_interface.proto (ParsePDF, Chunk, jsonStr): remote procedure call
+	interface definition.
+
+	* test/test0.json: ground truth json; removed all newlines; changed track number;
+
 2018-02-21  Sherry Lin  <sjslin@gmail.com>
 
 	* xml_parser/xml_parser.py: fixed key order in dicts for json
