@@ -1,3 +1,10 @@
+2018-02-21  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml_parser.py: fixed key order in dicts for json
+	tracks dict contains "title and authors" and "abstract" now
+	handles references and formulas
+	fixed error with text after <ref> in body not showing up (checked Element.tail)
+
 2018-02-12  Hanjun Li  <h1212@g.ucla.edu>
 
 	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html: added playlist
