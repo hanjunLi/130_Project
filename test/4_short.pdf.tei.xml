@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 /home/lopez/grobid/grobid-home/schemas/xsd/Grobid.xsd"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+	<teiHeader xml:lang="en">
+		<encodingDesc>
+			<appInfo>
+				<application version="0.5.1-SNAPSHOT" ident="GROBID" when="2018-02-22T03:07+0000">
+					<ref target="https://github.com/kermitt2/grobid">GROBID - A machine learning software for extracting information from scholarly documents</ref>
+				</application>
+			</appInfo>
+		</encodingDesc>
+		<fileDesc>
+			<titleStmt>
+				<title level="a" type="main">A Semantic Loss Function for Deep Learning with Symbolic Knowledge</title>
+			</titleStmt>
+			<publicationStmt>
+				<publisher/>
+				<availability status="unknown"><licence/></availability>
+			</publicationStmt>
+			<sourceDesc>
+				<biblStruct>
+					<analytic>
+						<author>
+							<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Jingyi</forename><surname>Xu</surname></persName>
+						</author>
+						<author>
+							<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Zilu</forename><surname>Zhang</surname></persName>
+						</author>
+						<author>
+							<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Tal</forename><surname>Friedman</surname></persName>
+						</author>
+						<author>
+							<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Yitao</forename><surname>Liang</surname></persName>
+						</author>
+						<author>
+							<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Guy</forename><surname>Van Den Broeck</surname></persName>
+						</author>
+						<title level="a" type="main">A Semantic Loss Function for Deep Learning with Symbolic Knowledge</title>
+					</analytic>
+					<monogr>
+						<imprint>
+							<date/>
+						</imprint>
+					</monogr>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<profileDesc>
+			<abstract>
+				<p>This paper develops a novel methodology for using symbolic knowledge in deep learning. From first principles, we derive a semantic loss function that bridges between neural output vectors and logical constraints. This loss function captures how close the neural network is to satisfying the constraints on its output. An experimental evaluation shows that it effectively guides the learner to achieve (near-)state-of-the-art results on semi-supervised multi-class classification. Moreover, it significantly increases the ability of the neural network to predict structured objects , such as rankings and paths. These discrete concepts are tremendously difficult to learn, and benefit from a tight integration of deep learning and symbolic reasoning methods.</p>
+			</abstract>
+		</profileDesc>
+	</teiHeader>
+	<text xml:lang="en">
+		<body>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="1.">Introduction</head><p>The widespread success of representation learning raises the question of which AI tasks are amenable to deep learn- ing, which tasks require classical model-based symbolic reasoning, and whether we can benefit from a tighter in- tegration of both approaches. In recent years, significant effort has gone towards various ways of using represen- tation learning to solve tasks that were previously tackled by symbolic methods. Such efforts include neural comput- ers, Turing machines, and differentiable programming (e.g. <ref type="bibr">Weston et al. (2014)</ref>; <ref type="bibr">Reed &amp; De Freitas (2015)</ref>; <ref type="bibr" target="#b2">Graves et al. (2016)</ref>; <ref type="bibr">Riedel et al. (2016)</ref>), relational embeddings (e.g. <ref type="bibr">Yang et al. (2014)</ref>; <ref type="bibr" target="#b5">Lin et al. (2015)</ref>), deep learning for graph data, neural theorem proving (e.g. <ref type="bibr" target="#b0">Bordes et al. (2013)</ref>; <ref type="bibr">Neelakantan et al. (2015)</ref>; <ref type="bibr" target="#b1">Duvenaud et al. (2015)</ref>; <ref type="bibr">Niepert et al. (2016)</ref>), and many more. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="2.">Background and Notation</head><p>A logical sentence (α or β) is constructed in the usual way, from variables and logical connectives (∧, ∨, etc.), and is also called a formula or constraint. A state or world x is an instantiation to all variables X. A state x satisfies a sentence α, denoted x |= α, if the sentence evaluates to be true in that world, as defined in the usual way. A sentence α entails another sentence β, denoted α |= β if all worlds that satisfy α also satisfy β. A sentence α is logically equivalent to sentence β, denoted α ≡ β, if both α |= β and β |= α.</p><p>The output row vector of a neural net is denoted p. Each value in p represents the probability of an output and falls in <ref type="bibr">[0,</ref><ref type="bibr">1]</ref>. We use both softmax and sigmoid units for our out- put activation functions. The notation for states x is used to refer the an assignment, the logical sentence enforcing the assignment, or the binary vector capturing that same assignment, as these are all equivalent notions.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.">Semantic Loss</head><p>In this section, we formally introduce semantic loss. We also show that semantic loss is not just an arbitrary defi- nition, but rather is defined uniquely by a set of intuitive properties. Stating these properties formally, we then pro- vide a rigorous, axiomatic proof of the uniqueness of se- mantic loss in satisfying these.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="3.1.">Definition</head><p>The formal definition of this is as follows:</p><p>Definition 1 (Semantic Loss). Let p be a vector of proba- bilities, one for each variable in X, and let α be a sentence over X. The semantic loss between α and p is</p><formula xml:id="formula_0">L s (α, p) ∝ − log x|=α i:x|=Xi p i i:x|=¬Xi (1 − p i ).</formula><p>Intuitively, the semantic loss is proportionate to a negative logarithm of the probability of generating a state that sat- isfies the constraint, when sampling values according to p. Hence, it is the self-information (or "surprise") of obtaining an assignment that satisfies the constraint <ref type="bibr" target="#b3">(Jones, 1979)</ref>.    </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head n="4.">Conclusions</head><p>Both reasoning and semi-supervised learning are often identified as key challenges for deep learning going for- ward. In this paper, we developed a principled way of com- bining automated reasoning for propositional logic with ex- isting deep learning architectures. Moreover, we showed that semantic loss provides significant benefits during semi- supervised classification, as well as deep structured predic- tion for highly complex output spaces. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A. Axiomatization of Semantic Loss: Details</head><p>This appendix provides further details on our axiomatiza- tion of semantic loss.</p><p>The first axiom says that there is no loss when the logical constraint α is always true (it is a logical tautology), inde- pendent of the predicted probabilities p.</p><p>Axiom 1 (Truth). The semantic loss of a true sentence is zero: ∀p, L s (true, p) = 0.</p><p>Next, when enforcing two constraints on disjoint sets of variables, we want the ability to compute semantic loss for the two constraints separately, and sum the results for their joint semantic loss.</p><p>Axiom 2 (Additive Independence). Let α be a sentence over X with probabilities p. Let β be a sentence over Y disjoint from X with probabilities q. The semantic loss between sentence α ∧ β and the joint probability vector</p><formula xml:id="formula_1">[p q] decomposes additively: L s (α ∧ β, [p q]) = L s (α, p) + L s (β, q).</formula><p>It directly follows from Axioms 1 and 2 that the probabil- ities of variables that are not used on the constraint do not affect the semantic loss.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>Proposition 1 formalizes this intuition.</head><p>Proposition 1 (Locality). Let α be a sentence over X with probabilities p. For any Y disjoint from X with probabili- ties q, the semantic loss</p><formula xml:id="formula_2">L s (α, [p q]) = L s (α, p).</formula><p>Proof. Follows from the additive independence and truth axioms. Set β = true in the additive independence axiom, and observe that this sets L s (β, q) = 0 because of the truth axiom.</p><p>To maintain logical meaning, we postulate that semantic loss is monotone in the order of implication.</p><p>Axiom 3 (Monotonicity). If α |= β, then the semantic loss</p><formula xml:id="formula_3">L s (α, p) ≥ L s (β, p) for any vector p.</formula><p>Intuitively, as we add stricter requirements to the logical constraint, going from β to α and making it harder to sat- isfy, semantic loss cannot decrease. For example, when β enforces the output of an neural network to encode a sub- tree of a graph, and we tighten that requirement in α to be a path, semantic loss cannot decrease. Every path is also a tree and any solution to α is a solution to β.</p><p>A first consequence following the monotonicity axiom is that logically equivalent sentences must incur an identical semantic loss for the same probability vector p. Hence, the semantic loss is indeed a semantic property of the logical sentence, and does not depend on the syntax of the sen- tence.</p><formula xml:id="formula_4">Proposition 2. If α ≡ β, then the semantic loss L s (α, p) = L s (β, p) for any vector p.</formula><p>A second consequence is that semantic loss must be non- negative.</p><p>Proposition 3 (Non-Negativity). Semantic loss is non- negative.</p><p>Proof. Because α |= true for all α, the monotonicity ax- iom implies that ∀p, L s (α, p) ≥ L s (true, p). By the truth axiom, L s (true, p) = 0, and therefore L s (α, p) ≥ 0 for all choices of α and p.</p><p>A state x is equivalently represented as a data vector, as well as a logical constraint that enforces a value for every variable in X. When both the constraint and the predicted vector represent the same state (for example,</p><formula xml:id="formula_5">X 1 ∧ ¬X 2 ∧ X 3 vs. [1 0 1])</formula><p>, there should be no semantic loss.</p><p>Axiom 4 (Identity). For any state x, there is zero semantic loss between its representation as a sentence, and its repre- sentation as a deterministic vector: ∀x, L s (x, x) = 0.</p><p>The axioms above together imply that any vector satisfying the constraint must incur zero loss. For example, when our constraint α requires that the output vector encodes an ar- bitrary total ranking, and the vector x correctly represents a single specific total ranking, there is no semantic loss. As a special case, logical literals (x or ¬x) constrain a sin- gle variable to take on a single value, and thus play a role similar to the labels used in supervised learning. Such con- straints require an even tighter correspondence: semantic loss must act like a classical loss function (i.e., cross en- tropy).</p><p>Axiom 5 (Label-Literal Correspondence). The semantic loss of a single literal is proportionate to the cross-entropy loss for the equivalent data label: L s (x, p) ∝ − log(p) and L s (¬x, p) ∝ − log(1 − p).</p><p>Next, we have the symmetry axioms.</p><p>Axiom 6 (Value Symmetry). For all p and α, we have that</p><formula xml:id="formula_6">L s (α, p) = L s (¯ α, 1 − p)</formula><p>where ¯ α replaces every variable in α by its negation.</p><p>Axiom 7 (Variable Symmetry). Let α be a sentence over X with probabilities p. Let π be a permutation of the variables X, let π(α) be the sentence obtained by replacing variables x by π(x), and let π(p) be the corresponding permuted vec- tor of probabilities. Then, L s (α, p) = L s (π(α), π(p)).</p><p>The value and variable symmetry axioms together imply the equality of the multiplicative constants in the label- literal duality axiom for all literals.</p><p>Lemma 5. There exists a single constant K such that L s (X, p) = −K log(p) and L s (¬X, p) = −K log(1 − p) for any literal x.</p><formula xml:id="formula_7">Proof. Value symmetry implies that L s (X i , p) = L s (¬X i , 1 − p).</formula><p>Using label-literal correspondence, this implies K 1 log(p i ) = K 2 log(1 − (1 − p i )) for the multiplicative constants K 1 and K 2 that are left unspec- ified by that axiom. This implies that the constants are identical. A similar argument based on variable symmetry proves equality between the multiplicative constants for different i.</p><p>Finally, this allows us to prove the following form of se- mantic loss for a state x.</p><p>Lemma 6. For state x and vector p, we have</p><formula xml:id="formula_8">L s (x, p) ∝ − i:x|=Xi log p i − i:x|=¬Xi log(1 − p i ).</formula><p>Proof of Lemma 6. A state x is a conjunction of indepen- dent literals, and therefore subject to the additive indepen- dence axiom. Each literal's loss in this sum is defined by Lemma 5.</p><p>The following and final axiom requires that semantic loss is proportionate to the logarithm of a function that is additive for mutually exclusive sentences.</p><p>Axiom 8 (Exponential Additivity). Let α and β be mutu- ally exclusive sentences (i.e., α ∧ β is unsatisfiable), and let</p><formula xml:id="formula_9">f s (K, α, p) = K − L s (α,p) . Then, there exists a posi- tive constant K such that f s (K, α ∨ β, p) = f s (K, α, p) + f s (K, β, p).</formula><p>We are now able to prove the main uniqueness theorem.</p><p>Proof of Theorem ??. The truth axiom states that ∀p, f s (K, true, p) = 1 for all positive constants K. This is the first Kolmogorov axiom of probability. The second Kolmogorov axiom for f s (K, ., p) follows from the additive independence axiom of semantic loss. The third Kolmogorov axiom (for the finite discrete case) is given by the exponential additivity axiom of semantic loss. Hence, f s (K, ., p) is a probability distribution for some choice of K, which implies the definition up to a multiplicative constant. <ref type="table" target="#tab_3">Table 2</ref> shows the slight architectural difference between the CNN used in ladder nets and ours. The major difference lies in the choice of ReLu. Note we add standard padded cropping to preprocess images and an additional fully con- nected layer at the end of the model, neither is used in lad- der nets. We only make those slight modification so that the baseline performance reported by <ref type="bibr">Rasmus et al. (2015)</ref> can be reproduced.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>B. Specification of the Convolutional Neural Network Model</head></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>C. Hyper-parameter Tuning Details</head><p>Validation sets are used for tuning the weight associated with semantic loss, the only hyper-parameter that causes noticeable difference in performance for our method. For our semi-supervised classification experiments, we per- form a grid search over {0.001, 0.005, 0.01, 0.05, 0.1} to find the optimal value. Empirically, 0.005 always gives the best or nearly the best results and we report its results on all experiments.</p><p>For the FASHION dataset specifically, because MNIST and FASHION share the same image size and structure, meth- ods developed in MNIST should be able to directly per- form on FASHION without heavy modifications. Because of this, we use the same hyper-parameters when evaluating our method. However, for the sake of fairness, we sub- ject ladder nets to a small-scale parameter tuning in case its performance is more volatile.</p><p>For the grids experiment, the only hyper pa- rameter that needed to be tuned was again the weight given to semantic loss, which after trying {0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1} was selected to be 0.5 based on validation results. For the preference learning experiment, we initially chose the semantic loss weight from {0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1} to be 0.1 based on validation, and then further tuned the weight to 0.25.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>D. Specification of Complex Constraint Models</head><p>Grids To compile our grid constraint, we first use <ref type="bibr">Nishino et al. (2017)</ref> to generate a constraint for each source destination pair. Then, we conjoin each of these with indicators specifying which source and destination pair must be used, and finally we disjoin all of these to- gether to form our constraint.</p><p>To generate the data, we begin by randomly removing one third of edges. We then filter out connected components with fewer than 5 nodes to reduce degenerate cases, and proceed with randomly selecting pairs of point to create data points.</p><p>The predictive model we employ as our baseline is a 5 layer MLP with 50 hidden sigmoid units per layer. It is trained using Adam Optimizer, with full data batches <ref type="bibr" target="#b4">(Kingma &amp; Ba, 2015)</ref>. Early stopping with respect to validation loss is used as a regularizer.</p><p>Preference Learning We split each user's ordering into their ordering over sushis 1,2,3,5,7,8, which we use as the features, and their ordering over 4,6,9,10 which are the la- bels we predict. The constraint is compiled directly from logic, as this can be done in a straightforward manner for an n-item ordering.</p><p>The predictive model we use here is a 3 layer MLP with 25 hidden sigmoid units per layer. It is trained using Adam Optimizer with full data batches <ref type="bibr" target="#b4">(Kingma &amp; Ba, 2015)</ref>. Early stopping with respect to validation loss is used as a regularizer.</p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>E. Probabilistic Soft Logic Encodings</head><p>We here give both encodings on the exactly-one constraint over three x 1 , x 2 , x 3 . The first encoding is:</p><formula xml:id="formula_10">(¬x 1 ∧ x 2 ∧ x 3 ) ∨ (x 1 ∧ ¬x 2 ∧ x 3 ) ∨ (x 1 ∧ x 2 ∧ ¬x 3 )</formula><p>The second encoding is:</p><formula xml:id="formula_11">(x 1 ∨ x 2 ∨ x 3 ) ∧ (¬x 1 ∨ ¬x 2 ) ∧ (¬x 1 ∨ ¬x 3 ) ∧ (¬x 2 ∨ ¬x 3 )</formula><p>Following the pattern presented, readers should be able to extend both encodings to cases whether the number of vari- ables is 10 and beyond. </p></div>
+<div xmlns="http://www.tei-c.org/ns/1.0"><head>A Semantic Loss Function for Deep Learning with Symbolic Knowledge</head></div><figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_1"><head>Figure 1 :</head><label>1</label><figDesc>Figure 1: Outputs of a neural network feed into semantic loss functions for constraints representing a one-hot encoding, a total ranking of preferences, and paths in a grid graph.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_2"><head>Figure 2 :</head><label>2</label><figDesc>Figure 2: Binary classification toy example: a linear classifier without and with semantic loss.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" xml:id="fig_3"><head>Proposition 4 (</head><label>4</label><figDesc>Satisfaction). If x |= α, then the semantic loss L s (α, x) = 0. Proof of Proposition 4. The monotonicity axiom special- izes to say that if x |= α, we have that ∀p, L s (x, p) ≥ L s (α, p). By choosing p to be x, this implies L s (x, x) ≥ L s (α, x). From the identity axiom, L s (x, x) = 0, and therefore 0 ≥ L s (α, x). Proposition 3 bounds the loss from below as L s (α, x) ≥ 0.</figDesc></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_1" validated="true"><head>Table 1 : CIFAR. Test accuracy comparison between CNN with Semantic Loss and ladder nets.</head><label>1</label><figDesc></figDesc><table>Accuracy % with # of used labels 
+4000 
+ALL 
+CNN Baseline in Ladder Net 
+76.67 (± 0.61) 90.73 
+Ladder Net (Rasmus et al., 2015) 
+79.60 (±0.47) 
+Baseline: CNN, Whitening, Cropping 77.13 
+90.96 
+CNN with Semantic Loss 
+81.79 
+90.92 
+
+Class 1 
+Class 2 
+Unlabeled 
+
+(a) Trained w/o semantic loss 
+
+Class 1 
+Class 2 
+Unlabeled 
+
+</table></figure>
+<figure xmlns="http://www.tei-c.org/ns/1.0" type="table" xml:id="tab_3" validated="true"><head>Table 2 : Specifications of CNNs in Ladder Net and our proposed method.</head><label>2</label><figDesc></figDesc><table>CNN in Ladder Net 
+CNN in this paper 
+Input 32×32 RGB image 
+Resizing to 36 × 36 with padding 
+Cropping Back 
+Whitening 
+Contrast Normalization 
+Gaussian Noise with std. of 0.3 
+3×3 conv. 96 BN LeakyReLU 
+3×3 conv. 96 BN ReLU 
+3×3 conv. 96 BN LeakyReLU 
+3×3 conv. 96 BN ReLU 
+3×3 conv. 96 BN LeakyReLU 
+3×3 conv. 96 BN ReLU 
+2×2 max-pooling stride 2 BN 
+3×3 conv. 192 BN LeakyReLU 3×3 conv. 192 BN ReLU 
+3×3 conv. 192 BN LeakyReLU 3×3 conv. 192 BN ReLU 
+3×3 conv. 192 BN LeakyReLU 3×3 conv. 192 BN ReLU 
+2×2 max-pooling stride 2 BN 
+3×3 conv. 192 BN LeakyReLU 3×3 conv. 192 BN ReLU 
+1×1 conv. 192 BN LeakyReLU 3×3 conv. 192 BN ReLU 
+1×1 conv. 10 BN LeakyReLU 
+1×1 conv. 10 BN ReLu 
+global meanpool BN 
+fully connected BN 
+10-way softmax </table></figure>
+		</body>
+		<back>
+			<div type="references">
+
+				<listBibl>
+
+<biblStruct xml:id="b0">
+	<analytic>
+		<title level="a" type="main">Translating embeddings for modeling multi-relational data</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Antoine</forename><surname>Bordes</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Usunier</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Nicolas</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Alberto</forename><surname>Garcia-Duran</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Jason</forename><surname>Weston</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Yakhnenko</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Oksana</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NIPS</title>
+		<imprint>
+			<date type="published" when="2013" />
+			<biblScope unit="page" from="2787" to="2795" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b1">
+	<analytic>
+		<title level="a" type="main">Convolutional networks on graphs for learning molecular fingerprints</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">David</forename><forename type="middle">K</forename><surname>Duvenaud</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Maclaurin</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Dougal</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Jorge</forename><surname>Iparraguirre</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Bombarell</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Rafael</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Hirzel</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Timothy</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Alán</forename><surname>Aspuruguzik</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Adams</forename><surname>Ryan</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">P</forename></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">NIPS</title>
+		<imprint>
+			<date type="published" when="2015" />
+			<biblScope unit="page" from="2224" to="2232" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b2">
+	<analytic>
+		<title level="a" type="main">Hybrid computing using a neural network with dynamic external memory</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Alex</forename><surname>Graves</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Wayne</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Greg</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Reynolds</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Malcolm</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Harley</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Tim</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Danihelka</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Ivo</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Grabska-Barwi´nskabarwi´nska</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Agnieszka</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Sergio</forename><surname>Colmenarejo</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Gómez</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Grefenstette</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Edward</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Ramalho</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Tiago</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">John</forename><surname>Agapiou</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="j">Nature</title>
+		<imprint>
+			<biblScope unit="volume">538</biblScope>
+			<biblScope unit="issue">7626</biblScope>
+			<biblScope unit="page" from="471" to="476" />
+			<date type="published" when="2016" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b3">
+	<monogr>
+		<title level="m" type="main">Elementary information theory</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Douglas</forename><surname>Jones</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Samuel</surname></persName>
+		</author>
+		<imprint>
+			<date type="published" when="1979" />
+			<publisher>Clarendon Press</publisher>
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b4">
+	<analytic>
+		<title level="a" type="main">Adam: A method for stochastic optimization</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Diederik</forename><forename type="middle">P</forename><surname>Kingma</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Jimmy</forename><surname>Ba</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Lei</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">ICLR</title>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+<biblStruct xml:id="b5">
+	<analytic>
+		<title level="a" type="main">Learning entity and relation embeddings for knowledge graph completion</title>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Yankai</forename><surname>Lin</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Zhiyuan</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Sun</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><surname>Maosong</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Yang</forename><surname>Liu</surname></persName>
+		</author>
+		<author>
+			<persName xmlns="http://www.tei-c.org/ns/1.0"><forename type="first">Xuan</forename><surname>Zhu</surname></persName>
+		</author>
+	</analytic>
+	<monogr>
+		<title level="m">AAAI</title>
+		<imprint>
+			<date type="published" when="2015" />
+		</imprint>
+	</monogr>
+</biblStruct>
+
+				</listBibl>
+			</div>
+		</back>
+	</text>
+</TEI>
