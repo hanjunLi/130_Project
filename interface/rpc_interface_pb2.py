@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='rpc_interface.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x13rpc_interface.proto\"\x1b\n\x05\x43hunk\x12\x12\n\npdfContent\x18\x01 \x02(\x0c\"\x1b\n\x07jsonStr\x12\x10\n\x08jsonData\x18\x01 \x02(\t2.\n\x08ParsePDF\x12\"\n\nGetFeature\x12\x06.Chunk\x1a\x08.jsonStr\"\x00(\x01')
+  serialized_pb=_b('\n\x13rpc_interface.proto\"\x1b\n\x05\x43hunk\x12\x12\n\npdfContent\x18\x01 \x02(\x0c\"\x1b\n\x07jsonStr\x12\x10\n\x08jsonData\x18\x01 \x02(\t2,\n\x08ParsePDF\x12 \n\nGetFeature\x12\x06.Chunk\x1a\x08.jsonStr\"\x00')
 )
 
 
@@ -113,7 +113,7 @@ _PARSEPDF = _descriptor.ServiceDescriptor(
   index=0,
   options=None,
   serialized_start=81,
-  serialized_end=127,
+  serialized_end=125,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetFeature',

@@ -14,7 +14,7 @@ class ParsePDFStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.GetFeature = channel.stream_unary(
+    self.GetFeature = channel.unary_unary(
         '/ParsePDF/GetFeature',
         request_serializer=rpc__interface__pb2.Chunk.SerializeToString,
         response_deserializer=rpc__interface__pb2.jsonStr.FromString,
@@ -25,7 +25,7 @@ class ParsePDFServicer(object):
   # missing associated documentation comment in .proto file
   pass
 
-  def GetFeature(self, request_iterator, context):
+  def GetFeature(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -35,7 +35,7 @@ class ParsePDFServicer(object):
 
 def add_ParsePDFServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'GetFeature': grpc.stream_unary_rpc_method_handler(
+      'GetFeature': grpc.unary_unary_rpc_method_handler(
           servicer.GetFeature,
           request_deserializer=rpc__interface__pb2.Chunk.FromString,
           response_serializer=rpc__interface__pb2.jsonStr.SerializeToString,
