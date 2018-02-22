@@ -1,36 +1,43 @@
 {% load static %}
 <head>
-    <link rel="stylesheet" href="{% static 'play_list.css' %}">
-    <script src="{% static 'jquery-3.3.1.js' %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+<!--     <link rel="stylesheet" href="{% static 'play_list.css' %}">
+ -->    <script src="{% static 'jquery-3.3.1.js' %}"></script>
     <script src="{% static 'play_list.js' %}"></script>
 </head>
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <input type="file" name="myfile">
-  <button type="submit">Upload</button>
-</form>
+<div class="w3-container w3-card-4 w3-light-grey w3-text-blue w3-margin">
+  <div class="w3-center">
+    <h2 class="w3-center">SPEAX</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="myfile">
+      <button type="submit">Upload</button>
+    </form>
 
-{% if uploaded_file_url %}
-<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-<p>File type: {{file_type}} </p>
-{% endif %}
+    {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+    <p>File type: {{file_type}} </p>
+    {% endif %}
 
-{% if tracks %}
-<audio controls>
-  <source src="{{ tracks.0.path }}" type="audio/mpeg">
-  Your browser doesn't support the audio element
-</audio>
+    {% if tracks %}
+    <audio controls>
+      <source src="{{ tracks.0.path }}" type="audio/mpeg">
+      Your browser doesn't support the audio element
+    </audio>
+    <div class="w3-card w3-center w3-margin-top" style="max-width:300px; margin: auto;">
+      <ul id="playlist" class="w3-ul w3-card-4 w3-center w3-hoverable w3-white">
+        {% for audio_track in tracks %}
+          <li><a href="{{ audio_track.path }}">{{ audio_track.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>  
 
-<ul id="playlist">
-  {% for audio_track in tracks %}
-    <li><a href="{{ audio_track.path }}">{{ audio_track.name }}</a></li>
-  {% endfor %}
-</ul>
-
-
-{% endif %}
-
-<p><a href="{% url 'index' %}">Return to home</a></p>
-{% endblock %}
+    {% endif %}
+  </div>
+</div>
+<!-- <p><a href="{% url 'index' %}">Return to home</a></p>
+ -->{% endblock %}

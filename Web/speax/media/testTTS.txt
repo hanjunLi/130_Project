@@ -1,0 +1,15 @@
+The “Amazing Lunch Indicator” is a GPS based mobile application which helps people to find the closest restaurants based on the user’s current position and other specification like price, restaurant type, dish and more. The application should be free to download from either a mobile phone application store or similar services. Restaurant owners can provide their restaurant information using the web portal. This information will act as the bases for the search results displayed to the user. An administrator also uses the webportal in order to administer the system and keepthe information accurate. The administrator can, for instance, verify restaurant owners and manage user information.
+Furthermore, the software needs both Internet and GPS connection to fetch and display results. All system
+information is maintained in a
+database, which is located on a web
+-
+server. The software also interacts
+with the GPS
+-
+Navigator software which is required to be an already installed application on the user’s
+mobile phone. By using the GPS
+-
+Navigator, users can view desired restaurants on a
+map and be navigated
+to them. The application also has the capability of representing both summary and detailed information
+about the restaurants.
