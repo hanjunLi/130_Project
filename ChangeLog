@@ -1,3 +1,9 @@
+2018-02-22  Andres Abdo  <andres@andres-ThinkPad-T450s>
+
+	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html: Added
+	styling to the webportal using w3.css, and removed some of the old
+	css.
+
 2018-02-21  Hanjun Li  <h1212@g.ucla.edu>
 
 	* interface/rpc_interface_pb2.py: messages definition compiled from
