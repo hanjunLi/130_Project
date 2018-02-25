@@ -28,7 +28,7 @@
       "id": "3.1. Deﬁnition",
       "content": "The formal deﬁnition of this is as follows: Deﬁnition 1 (Semantic Loss). Let p be a vector of proba-bilities, one for each variable in X, and let α be a sentence over X. The semantic loss between α and p is [Math] Intuitively, the semantic loss is proportionate to a negative logarithm of the probability of generating a state that sat-isﬁes the constraint, when sampling values according to p. Hence, it is the self-information (or “surprise”) of obtaining an assignment that satisﬁes the constraint (Jones, 1979)."
     },
-    "26": {
+    "7": {
       "id": "5. Conclusions",
       "content": "Both reasoning and semi-supervised learning are often identiﬁed as key challenges for deep learning going for-ward. In this paper, we developed a principled way of com-bining automated reasoning for propositional logic with ex-isting deep learning architectures. Moreover, we showed that semantic loss provides signiﬁcant beneﬁts during semi-supervised classiﬁcation, as well as deep structured predic-tion for highly complex output spaces."
     }
