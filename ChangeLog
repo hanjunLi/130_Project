@@ -1,3 +1,10 @@
+2018-03-02  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml_parser.py: [math] used for math formulas
+	hyphenated word problems fixed
+	empty tracks now say "No content found"
+	added some code so testing is easier
+
 2018-02-22  Andres Abdo  <andres@andres-ThinkPad-T450s>
 
 	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html: Added
