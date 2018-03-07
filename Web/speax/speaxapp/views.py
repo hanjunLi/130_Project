@@ -10,6 +10,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 
+import subprocess
+
 # gtts or other speech engine
 from gtts import gTTS
 
@@ -36,16 +38,25 @@ def get_jason_response():
     # implementation through RPC
     pass
 
-def make_tracks(jason_file, fs):
+def make_tracks(jason_file, fs, engine=1):
     data = json.load(jason_file)
     json_tracks = data['tracks']
     json_metadata = data['metadata']
     track_list = []
     for i in range(len(json_tracks)):
-        audio = get_audio_from_str( json_tracks[str(i+1)]['content'] )
-        with open('myaudio', 'w+b') as af:
-            audio.write_to_fp(af)
-            audio_url = fs.url(fs.save(af.name, af))
+        # decide to use local engine or google service
+        if not json_tracks[str(i+1)]['content']:
+            json_tracks[str(i+1)]['content'] = "no content"
+        if engine == 1:
+            audio = get_audio_from_str( json_tracks[str(i+1)]['content'] )            
+            with open('myaudio', 'w+b') as af:
+                audio.write_to_fp(af)
+                audio_url = fs.url(fs.save(af.name, af))
+        elif engine == 0:
+            subprocess.call(["espeak", "-w tmp.wav", json_tracks[str(i+1)]['content']])
+            with open('tmp.wav', 'rb') as af:
+                audio_url = fs.url(fs.save(af.name, af))
+            
         track_list.append( track( json_tracks[str(i+1)]['id'], audio_url ) )
     return track_list
     
@@ -74,6 +85,6 @@ def simple_upload(request):
         if myfile.content_type.find('json') > -1:
             # json file with tracks
             with open(fs.path(filename), 'r') as json_file:
-                template_dict['tracks'] = make_tracks(json_file, fs)
+                template_dict['tracks'] = make_tracks(json_file, fs, 0)
             
     return render(request, 'speaxapp/simple_upload.html', template_dict)

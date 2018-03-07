@@ -1,3 +1,7 @@
+2018-03-07  Hanjun Li  <h1212@g.ucla.edu>
+
+	* Web/speax/speaxapp/views.py (make_tracks): added local engine switch
+
 2018-03-02  Sherry Lin  <sjslin@gmail.com>
 
 	* xml_parser/xml_parser.py: [math] used for math formulas
