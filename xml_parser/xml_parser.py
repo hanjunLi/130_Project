@@ -120,10 +120,13 @@ def get_tracks(body):
         tracknum += 1
     return tracks
 
-
-def xml_parser(file_name):
-    tree = ET.parse(file_name)
-    root = tree.getroot()
+def xml_parser(file_name, xml_str=''):
+    if not xml_str:
+        tree = ET.parse(file_name)
+        root = tree.getroot()
+    else:
+        root = ET.fromstring(xml_str)
+        
     output = OrderedDict()
 
     metadata = get_metadata(

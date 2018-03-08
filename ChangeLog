@@ -1,6 +1,13 @@
 2018-03-07  Hanjun Li  <h1212@g.ucla.edu>
 
+	* Web/speax/speaxapp/views.py (simple_upload): incorporated pdf file type
+
+	* xml_parser/xml_parser.py (xml_parser): modified to take string input
+
 	* Web/speax/speaxapp/views.py (make_tracks): added local engine switch
+
+	* Web/speax/speaxapp/views.py (get_json_response): request xml from grobid,
+	and then json from xml_parser
 
 2018-03-02  Sherry Lin  <sjslin@gmail.com>
 

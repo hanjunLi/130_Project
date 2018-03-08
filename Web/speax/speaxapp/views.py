@@ -4,18 +4,22 @@ from django.http import HttpResponse
 def index(request):
     return HttpResponse("Hello World.")
 
-# Create your views here.
+# django util functions
 from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 
+# import parser component, and run subprocess for local speach engine
 import subprocess
-
-# gtts or other speech engine
+import requests
+import sys
+import os
+sys.path.insert(1, os.path.join(sys.path[0], '../../xml_parser'))
+import xml_parser
+import json
 from gtts import gTTS
 
-import json
 
 class track:
     def __init__(self, name="", path=""):
@@ -34,12 +38,15 @@ def get_audio_from_str(string):
     tts = gTTS(text=string, lang='en', slow=False)
     return tts
 
-def get_jason_response():
+def get_json_response(pdfFile):
     # implementation through RPC
-    pass
+    url = "http://cloud.science-miner.com/grobid/api/processFulltextDocument"
+    r = requests.post(url, files={'input' : ('tmp.pdf',
+                                             pdfFile, 'application/pdf')})
+    return json.loads(xml_parser.xml_parser('', r.text))
 
-def make_tracks(jason_file, fs, engine=1):
-    data = json.load(jason_file)
+def make_tracks(data, fs, engine=1):
+    # data = json.load(jason_file)
     json_tracks = data['tracks']
     json_metadata = data['metadata']
     track_list = []
@@ -85,6 +92,12 @@ def simple_upload(request):
         if myfile.content_type.find('json') > -1:
             # json file with tracks
             with open(fs.path(filename), 'r') as json_file:
-                template_dict['tracks'] = make_tracks(json_file, fs, 0)
+                template_dict['tracks'] = make_tracks(json.load(jason_file), fs, 1)
+
+        if myfile.content_type.find('pdf') > -1:
+            # pdf file
+            with open(fs.path(filename), 'rb') as pdfFile:
+                jsonData = get_json_response(pdfFile)
+                template_dict['tracks'] = make_tracks(jsonData, fs, 1)
             
     return render(request, 'speaxapp/simple_upload.html', template_dict)
