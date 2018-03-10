@@ -1,3 +1,8 @@
+2018-03-10  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml.py: moved duplicate code into a new function, handle_div()
+	added some code in handle_div() for removing extra whitespace
+
 2018-03-07  Hanjun Li  <h1212@g.ucla.edu>
 
 	* Web/speax/speaxapp/views.py (simple_upload): incorporated pdf file type
