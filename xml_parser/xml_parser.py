@@ -3,7 +3,7 @@
 import xml.etree.ElementTree as ET
 import json
 from collections import OrderedDict
-import os
+import re
 
 ns = '{http://www.tei-c.org/ns/1.0}'  # xml namespace
 proj_dir = '/Users/sherrylin/130_Project/'
@@ -51,27 +51,39 @@ def get_abstract(abs_elem):
     abs_track = OrderedDict()
     abs_p = ""
 
-    for elem in abs_elem.iter():
-        tag = elem.tag
-        if tag == ns + 'ref':
-            abs_p += elem.text + ' '
-            if elem.tail is not None:
-                if not elem.tail.isspace():  # don't add if tail is just whitespace
-                    abs_p += str.replace(elem.tail, '- ', '') + ' '
-        elif tag == ns + 'p':
-            abs_p += '\n' + str.replace(elem.text, '- ', '')
-        elif tag == ns + 'formula':
-            abs_p += '[math] '
-    if abs_p == "":
-        abs_p = "No abstract found"
-    else: # remove last space and first newline
-        if abs_p[0] == '\n':
-            abs_p = abs_p[1:]
-        if abs_p[-1] == ' ':
-            abs_p = abs_p[:-1]
-    abs_track["id"] = "abstract"
+    abs_p = handle_div(abs_elem)
+
+    abs_track["id"] = "Abstract"
     abs_track["content"] = abs_p
     return abs_track
+
+
+# helper function for get_abstract and get_tracks
+# contains duplicate code for handling a single <div> or <abstract>
+def handle_div(div):
+    content = ""
+    for elem in div.iter():
+        tag = elem.tag
+        if tag == ns + 'ref':
+            content += elem.text + ' '
+            if elem.tail is not None:
+                content += str.replace(elem.tail, '- ', '') + ' '
+        elif tag == ns + 'p':
+            content += '\n' + str.replace(elem.text, '- ', '')
+        elif tag == ns + 'formula':
+            content += ' [math] '
+    if content == '':
+        content = "No content found"
+    else:  # remove extra spaces
+        content = content.strip()
+        content = re.sub(' +', ' ', content)
+        content = str.replace(content, ' ,', ',')
+        content = str.replace(content, '( ', ' (')
+        content = str.replace(content, ' )', ')')
+        content = str.replace(content, ' .', '.')
+        content = str.replace(content, ' ;', ';')
+        content = str.replace(content, ' :', ':')
+    return content
 
 
 # get each track from each div in TEI/text/body
@@ -82,7 +94,6 @@ def get_tracks(body):
     tracknum = 3  # 1 should be "title and authors"; 2 should be "abstract"
 
     for div in body.iter(ns + 'div'):
-        content = ""
         head = div.find(ns + 'head')
         try:
             sec_num = head.attrib['n'] + ' '
@@ -94,25 +105,8 @@ def get_tracks(body):
             sec_title = 'No section title'
         my_id = sec_num + sec_title
         # print('id is', my_id)
-        for elem in div.iter():  # should handle references and formulas
-            tag = elem.tag
-            if tag == ns + 'ref':
-                content += elem.text + ' '
-                if elem.tail is not None:
-                    if not elem.tail.isspace():  # don't add if tail is just whitespace
-                        content += str.replace(elem.tail, '- ', '') + ' '
-            elif tag == ns + 'p':
-                content += '\n' + str.replace(elem.text, '- ', '')
-            elif tag == ns + 'formula':
-                content += '[math] '
-        if content == '':
-            content = "No content found"
-        else:  # remove last space and first newline
-            if content[0] == '\n':
-                content = content[1:]
-            if content[-1] == ' ':
-                content = content[:-1]
-        # print('content is', content)
+        content = handle_div(div)
+        # print('content is ' + content)
         this_track = OrderedDict()
         this_track['id'] = my_id
         this_track['content'] = content
@@ -120,6 +114,8 @@ def get_tracks(body):
         tracknum += 1
     return tracks
 
+
+# constructs the final output and returns a json string
 def xml_parser(file_name, xml_str=''):
     if not xml_str:
         tree = ET.parse(file_name)
@@ -136,7 +132,7 @@ def xml_parser(file_name, xml_str=''):
 
     # add "title and authors", "abstract" sections to tracks OrderedDict
     title_and_authors = OrderedDict()
-    title_and_authors['id'] = 'title and authors'
+    title_and_authors['id'] = 'Title and Authors'
     title_and_authors['content'] = metadata['title'] + ' by ' + metadata['authors']
 
     tracks['1'] = title_and_authors
@@ -151,10 +147,10 @@ def xml_parser(file_name, xml_str=''):
 
 
 def main():
-    json_str = xml_parser(proj_dir + "/test/4_short.pdf.tei.xml")
+    json_str = xml_parser(proj_dir + "/test/2.pdf.tei.xml")
     decoded = bytes(json_str, "utf-8").decode("unicode_escape")
     print(decoded)
-    f = open(proj_dir + 'test/test.json', 'w+')
+    f = open(proj_dir + 'test/test2.json', 'w+')
     f.write(decoded)
     f.close()
     g = open(proj_dir + 'test/json.json', 'w+')

@@ -1,3 +1,4 @@
+
 2018-03-10  Andres Abdo  <andres@andres-ThinkPad-T450s>
 
 	* Web/speax/staticfiles/images/ajax-loading-gif-3.gif:
@@ -6,6 +7,11 @@
 	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html:
 	added a loading spinner to the UI to inform the user that the app is
 	processing after the user clicks the upload button.
+
+2018-03-10  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml.py: moved duplicate code into a new function, handle_div()
+	added some code in handle_div() for removing extra whitespace
 
 2018-03-07  Hanjun Li  <h1212@g.ucla.edu>
 
