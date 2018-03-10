@@ -6,17 +6,44 @@
 <!--     <link rel="stylesheet" href="{% static 'play_list.css' %}">
  -->    <script src="{% static 'jquery-3.3.1.js' %}"></script>
     <script src="{% static 'play_list.js' %}"></script>
+    <style type="text/css">
+      #loading {
+        margin: auto;
+         width: 100%;
+         height: 100%;
+         top: 0;
+         left: 0;
+/*         position: fixed;
+*/         display: block;
+         opacity: 0.7;
+         background-color: #fff;
+         z-index: 99;
+         text-align: center;
+      }
+
+      #loading-image {
+/*        position: absolute;
+*/        margin: auto;
+        top: 100px;
+        left: 240px;
+        z-index: 100;
+      }
+    </style>
 </head>
 
 {% block content %}
+
 <div class="w3-container w3-card-4 w3-light-grey w3-text-blue w3-margin">
   <div class="w3-center">
     <h2 class="w3-center">SPEAX</h2>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="file" name="myfile">
-      <button type="submit">Upload</button>
+      <button type="submit" id="upload_button" onclick="loading_spinner()">Upload</button>
     </form>
+    <div id="loading">
+      <img id="loading-image" src="{% static 'images/ajax-loading-gif-3.gif' %}" alt="Loading..." />
+    </div>
 
     {% if uploaded_file_url %}
     <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
@@ -39,5 +66,32 @@
     {% endif %}
   </div>
 </div>
-<!-- <p><a href="{% url 'index' %}">Return to home</a></p>
- -->{% endblock %}
+<script language="javascript" type="text/javascript">
+function onReady(callback, tagName) {
+    var intervalID = window.setInterval(checkReady, 1000);
+    function checkReady() {
+        if (document.getElementsByTagName(tagName)[0] !== undefined) {
+            window.clearInterval(intervalID);
+            callback.call(this);
+        }
+    }
+}
+
+function show(id, value) {
+    document.getElementById(id).style.display = value ? 'block' : 'none';
+}
+
+onReady(function () {
+    show('loading', false);
+}, 'body');
+
+function loading_spinner() {
+  show('loading', true);
+  onReady(function () {
+    show('loading', false);
+  }, 'audio');
+}
+
+</script>
+
+{% endblock %}
