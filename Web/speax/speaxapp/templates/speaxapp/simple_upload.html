@@ -32,14 +32,27 @@
 </head>
 
 {% block content %}
+<div id="header" class="w3-blue w3-card-4">
+  <header class="w3-bar">
+    <div class="w3-center">
+      <h1 class="w3-xxlarge w3-opacity w3-wide">SPEAX</h1>
+ 
+      <div class="w3-wide w3-opacity">
+        A text-to-speech web-application designed specifically for research papers.
+      </div>
+    </div>
+  </header>
+</div>
 
 <div class="w3-container w3-card-4 w3-light-grey w3-text-blue w3-margin">
+  
   <div class="w3-center">
-    <h2 class="w3-center">SPEAX</h2>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="file" name="myfile">
-      <button type="submit" id="upload_button" onclick="loading_spinner()">Upload</button>
+          <span>
+            <input type="file" name="myfile">
+          </span>
+          <button class="w3-button w3-green" type="submit" id="upload_button" onclick="loading_spinner()">CREATE AUDIO TRACKS</button>
     </form>
     <div id="loading">
       <img id="loading-image" src="{% static 'images/ajax-loading-gif-3.gif' %}" alt="Loading..." />

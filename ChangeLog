@@ -1,3 +1,9 @@
+2018-03-13  Andres Abdo  <andres@andres-ThinkPad-T450s>
+
+	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html:
+	Changed the UI to add a header with a simple decription of the
+	web application, and changed the text in the upload button to be more
+	descriptive of its action. 
 
 2018-03-10  Andres Abdo  <andres@andres-ThinkPad-T450s>
 
