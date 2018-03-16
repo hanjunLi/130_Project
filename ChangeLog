@@ -1,3 +1,8 @@
+2018-03-16  Sherry Lin  <sjslin@gmail.com>
+
+	* xml_parser/xml_parser.py: changed try/except to handle missing <abstract>, 
+	<body>, etc. Elements.
+
 2018-03-13  Andres Abdo  <andres@andres-ThinkPad-T450s>
 
 	* Web/speax/speaxapp/templates/speaxapp/simple_upload.html:
@@ -16,7 +21,7 @@
 
 2018-03-10  Sherry Lin  <sjslin@gmail.com>
 
-	* xml_parser/xml.py: moved duplicate code into a new function, handle_div()
+	* xml_parser/xml_parser.py: moved duplicate code into a new function, handle_div()
 	added some code in handle_div() for removing extra whitespace
 
 2018-03-07  Hanjun Li  <h1212@g.ucla.edu>

@@ -1,5 +1,4 @@
 # note: python 3.6.4 used
-# note: may need to adjust if other research papers have different formats
 import xml.etree.ElementTree as ET
 import json
 from collections import OrderedDict
@@ -18,25 +17,30 @@ def get_metadata(analytic):
     try:
         title = analytic.find(ns + 'title').text
     except AttributeError:
-        title = 'No title found'
+        title = 'no title found'
     # print('title is', title)
     metadata['title'] = title
 
     # get authors
     authors = ""
     for node in analytic.iter(ns + 'persName'):
-        forename = node.find(ns + 'forename')
-        try:
-            authors += forename.text + ' '
-        except AttributeError:
-            authors += 'FirstNameUnknown '
+        # there may be 2 forenames (one is a middle name), so use for and iter()
+        authors_forename = ''
+        for forename in node.iter(ns + 'forename'):
+            try:
+                authors_forename += forename.text + ' '
+            except AttributeError:
+                authors_forename += 'ForenameUnknown '
+        if authors_forename == '':
+            authors_forename = 'ForenameUnknown '
+        authors += authors_forename
         surname = node.find(ns + 'surname')
         try:
             authors += surname.text + ', '
-        except AttributeError:
+        except (AttributeError, TypeError):
             authors += 'LastNameUnknown, '
     if authors == "":
-        authors = "No authors found"
+        authors = "no authors found"
     else:
         authors = authors[:-2]  # remove ', ' from last author
     # print('authors are', authors)
@@ -49,7 +53,6 @@ def get_metadata(analytic):
 # output: abstract OrderedDict(track 2)
 def get_abstract(abs_elem):
     abs_track = OrderedDict()
-    abs_p = ""
 
     abs_p = handle_div(abs_elem)
 
@@ -97,13 +100,13 @@ def get_tracks(body):
         head = div.find(ns + 'head')
         try:
             sec_num = head.attrib['n'] + ' '
-        except (KeyError, AttributeError):
+        except (KeyError, AttributeError, TypeError):
             sec_num = ''
         try:
             sec_title = head.text
-        except AttributeError:
-            sec_title = 'No section title'
-        my_id = sec_num + sec_title
+            my_id = sec_num + sec_title
+        except (AttributeError, TypeError):
+            my_id = sec_num + 'No section title'
         # print('id is', my_id)
         content = handle_div(div)
         # print('content is ' + content)
@@ -122,7 +125,7 @@ def xml_parser(file_name, xml_str=''):
         root = tree.getroot()
     else:
         root = ET.fromstring(xml_str)
-        
+
     output = OrderedDict()
 
     metadata = get_metadata(
@@ -147,16 +150,15 @@ def xml_parser(file_name, xml_str=''):
 
 
 def main():
-    json_str = xml_parser(proj_dir + "/test/2.pdf.tei.xml")
+    json_str = xml_parser(proj_dir + "/test/3.pdf.tei.xml")
     decoded = bytes(json_str, "utf-8").decode("unicode_escape")
     print(decoded)
-    f = open(proj_dir + 'test/test2.json', 'w+')
+    f = open(proj_dir + 'test/3.json', 'w+')
     f.write(decoded)
     f.close()
-    g = open(proj_dir + 'test/json.json', 'w+')
+    g = open(proj_dir + 'test/3json.json', 'w+')
     g.write(json_str)
     g.close()
-
 
 
 if __name__ == "__main__":
